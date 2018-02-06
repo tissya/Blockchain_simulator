@@ -15,7 +15,7 @@ class Node{
         //追加するブロックが2番目以降
         else{
             Block pre_block = chain.get(chain.size() - 1);//チェーンの最後に入っているブロックを呼び出す
-            block.setPrev(pre_block);//追加するブロックに前のブロックを入れる
+            inspectBlock.setPrev(pre_block);//追加するブロックに前のブロックを入れる
             chain.add(inspectBlock);//チェーンにブロックを追加する
         }
         inspectRun = false;//ブロック追加した時inspectRunはfalseになる
