@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.ArrayList;
 
 class Node{
     public ArrayList<Block> chain = new ArrayList(); //ブロックのチェーン
