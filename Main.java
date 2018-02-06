@@ -5,10 +5,10 @@ class Main{
 
         bc.run();//ブロックチェーンのシミュレーション開始
 
-        int Bc_message = bc.getMessageNum();
-        int Bc_turn = bc.getTurn();
+        int BcMessage = bc.getMessageNum();
+        int BcTurn = bc.getTurn();
 
         //Blockchainシミュレート結果を出力する
-        System.out.println("Blockchain : Message = " + Bc_message + " Turn = " + Bc_turn);
+        System.out.println("Blockchain : Message = " + BcMessage + " Turn = " + BcTurn);
     }
 }

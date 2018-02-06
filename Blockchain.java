@@ -21,7 +21,7 @@ class Blockchain{
     int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
     int nodes; //ノード数
     int turn = 0;//経過ターン数
-    int message_num = 0;//メッセージ数
+    int messageNum = 0;//メッセージ数
     boolean mining = false;//マイニングのフラグ
     boolean sendMessage = false;//マイニングしたブロック通知の管理フラグ
 
@@ -35,7 +35,7 @@ class Blockchain{
     }
 
     public int getMessageNum(){
-        return message_num;
+        return messageNum;
     }
 
     public int getTurn(){
@@ -50,7 +50,7 @@ class Blockchain{
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
                     if(!node[0].getInspectRun() && !node[1].getInspectRun()){//ノードNo.0がブロック検査をしていない時
                         Block block = new Block();
-                        message_num += nodes - 1;//自身以外にメッセージを送信する
+                        messageNum += nodes - 1;//自身以外にメッセージを送信する
                         sendMessage = true;//発見したブロックを自身以外の全てのノードに通知する
                         node[0].inspect(block);//実際はすでにinspect済みである(マイニングした時点で)
                     }
