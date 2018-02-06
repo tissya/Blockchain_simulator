@@ -81,7 +81,7 @@ class Blockchain{
             consensus = node[0].getBlocklength();
             for(int i = 1; i < node.length;i++){
                 int length = node[i].getBlocklength();
-                consensus = min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
+                consensus = Math.min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
         }//while
     }
