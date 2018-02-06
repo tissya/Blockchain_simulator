@@ -39,7 +39,7 @@ class Node{
     */
 
     //チェーンの長さを返す
-    public int getBlocklength(){
+    public int getChainlength(){
         return chain.size();
     }
 

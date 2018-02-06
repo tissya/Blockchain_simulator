@@ -78,9 +78,9 @@ class Blockchain{
 
             turn++;//全てのノードが1回処理する毎にターンを1増やす
             //全てのノードのブロックチェーンに含まれるブロック数を比較してどれだけブロックが追加(コンセンサス)されているか求める
-            consensus = node[0].getBlocklength();
+            consensus = node[0].getChainlength();
             for(int i = 1; i < node.length;i++){
-                int length = node[i].getBlocklength();
+                int length = node[i].getChainlength();
                 consensus = Math.min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
         }//while
