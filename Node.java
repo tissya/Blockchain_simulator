@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 class Node{
-    public ArrayList<Block> chain = new ArrayList(); //ブロックのチェーン
+    public ArrayList<Block> chain = new ArrayList<>(); //ブロックのチェーン
     private Block inspectBlock = null; //検査されるブロックを保持する
     private int numberCount = 1;//BlockのData内容(ブロックのIDカウントみたいなの)
     private boolean inspectRun = false;//inspectメソッドを実行したかどうか判定(Blockを追加するとfalseに戻る)
