@@ -42,6 +42,11 @@ class Blockchain{
         return turn;
     }
 
+    //自身以外にメッセージを送信する
+    private void sendingMessage(){
+        messageNum += nodes - 1;
+    }
+
     public void run(){
         Node[] node = new Node[nodes]; //指定分のノードを作成
 
@@ -50,7 +55,7 @@ class Blockchain{
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
                     if(!node[0].getInspectRun() && !node[1].getInspectRun()){//ノードNo.0がブロック検査をしていない時
                         Block block = new Block();
-                        messageNum += nodes - 1;//自身以外にメッセージを送信する
+                        sendingMessage();//自身以外にメッセージを送信する
                         sendMessage = true;//発見したブロックを自身以外の全てのノードに通知する
                         node[0].inspect(block);//実際はすでにinspect済みである(マイニングした時点で)
                     }
