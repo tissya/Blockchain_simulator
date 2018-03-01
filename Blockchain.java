@@ -48,7 +48,9 @@ class Blockchain{
     }
 
     public void run(){
-        Node[] node = new Node[nodes]; //指定分のノードを作成
+        //System.out.println("norma : " + norma); //normaの値は取得OK
+        //System.out.println("nodes : " + nodes); //nodesの値は取得OK
+        Node[] node = new Node[nodes]; //指定分のノードを作成(もしかしてインスタンスはまだ持っていない？)
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
@@ -84,10 +86,12 @@ class Blockchain{
             turn++;//全てのノードが1回処理する毎にターンを1増やす
             //全てのノードのブロックチェーンに含まれるブロック数を比較してどれだけブロックが追加(コンセンサス)されているか求める
             consensus = node[0].getChainlength();
+            //System.out.println(node[0]);
             for(int i = 1; i < node.length;i++){
                 int length = node[i].getChainlength();
                 consensus = Math.min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
         }//while
+        return;
     }
 }
