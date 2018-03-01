@@ -30,6 +30,10 @@ class Raft{
     }
 
     public void run(){
+        Node[] node = new Node[nodes]; 
+        for(int i = 0; i < nodes; i++){
+            node[i] = new Node();
+        }
         return;
     }
 }
