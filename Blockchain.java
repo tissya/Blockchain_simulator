@@ -21,7 +21,7 @@ class Blockchain{
     int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
     int nodes; //ノード数
     int turn = 0;//経過ターン数
-    int message_num = 0;//メッセージ数
+    int messageNum = 0;//メッセージ数
     boolean mining = false;//マイニングのフラグ
     boolean sendMessage = false;//マイニングしたブロック通知の管理フラグ
 
@@ -35,22 +35,31 @@ class Blockchain{
     }
 
     public int getMessageNum(){
-        return message_num;
+        return messageNum;
     }
 
     public int getTurn(){
         return turn;
     }
 
+    //自身以外にメッセージを送信する
+    private void sendingMessage(){
+        messageNum += nodes - 1;
+    }
+
     public void run(){
-        Node[] node = new Node[nodes]; //指定分のノードを作成
+        //指定分のノードを作成
+        Node[] node = new Node[nodes]; 
+        for(int i = 0; i < nodes; i++){
+            node[i] = new Node();
+        }
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
                     if(!node[0].getInspectRun() && !node[1].getInspectRun()){//ノードNo.0がブロック検査をしていない時
                         Block block = new Block();
-                        message_num += nodes - 1;//自身以外にメッセージを送信する
+                        sendingMessage();//自身以外にメッセージを送信する
                         sendMessage = true;//発見したブロックを自身以外の全てのノードに通知する
                         node[0].inspect(block);//実際はすでにinspect済みである(マイニングした時点で)
                     }
@@ -78,11 +87,12 @@ class Blockchain{
 
             turn++;//全てのノードが1回処理する毎にターンを1増やす
             //全てのノードのブロックチェーンに含まれるブロック数を比較してどれだけブロックが追加(コンセンサス)されているか求める
-            consensus = node[0].getBlocklength();
+            consensus = node[0].getChainlength();
             for(int i = 1; i < node.length;i++){
-                int length = node[i].getBlocklength();
-                consensus = min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
+                int length = node[i].getChainlength();
+                consensus = Math.min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
         }//while
+        return;
     }
 }
