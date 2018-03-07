@@ -6,7 +6,7 @@ Raftのプログラム
 */
 
 class Raft{
-    int consensus = 0; //全てのノードにブロックが追加された数
+    int commit = 0; //どれだけコミットされたかカウントする
     int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
     int nodes; //ノード数
     int turn = 0;//経過ターン数
@@ -30,9 +30,14 @@ class Raft{
     }
 
     public void run(){
-        Node[] node = new Node[nodes]; 
+        //ノードを指定分作成する
+        RaftNode[] node = new RaftNode[nodes]; 
         for(int i = 0; i < nodes; i++){
-            node[i] = new Node();
+            node[i] = new RaftNode();
+        }
+
+        while(commit < norma){
+            /////
         }
         return;
     }

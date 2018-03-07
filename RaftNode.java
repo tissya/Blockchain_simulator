@@ -8,6 +8,11 @@ class RaftNode{
         return commit;
     }
 
+    //役割を返す
+    public String getRole(){
+        return role;
+    }
+
     //役割を設定するメソッド
     public void setRole(String choice){
         role = choice;
