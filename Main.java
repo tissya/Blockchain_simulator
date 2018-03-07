@@ -4,7 +4,7 @@
 
 class Main{
     public static void main(String[] args){
-        Blockchain bc = new Blockchain(100,5); //ノルマ100, ノード数5(仮置き)
+        Blockchain bc = new Blockchain(500,15); //ノルマ100, ノード数5(仮置き)
         BlockDAG bdg = new BlockDAG(100,5); //ノルマ100, ノード数5(仮置き)
         Raft raft = new Raft(100,5); //ノルマ100, ノード数5(仮置き)
 
