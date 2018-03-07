@@ -6,11 +6,12 @@ Raftのプログラム
 */
 
 class Raft{
-    int commit = 0; //どれだけコミットされたかカウントする
-    int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
-    int nodes; //ノード数
-    int turn = 0;//経過ターン数
-    int messageNum = 0;//メッセージ数
+    private int commit = 0; //どれだけコミットされたかカウントする
+    private int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
+    private int nodes; //ノード数
+    private int turn = 0;//経過ターン数
+    private int messageNum = 0;//メッセージ数
+    private boolean CandidateSwitch = false; //ノード群の中にCandidateがいるかどうか(LeaderElection)
 
     //コンストラクタ
     Raft(int norma,int node){
@@ -37,7 +38,7 @@ class Raft{
         }
 
         while(commit < norma){
-            /////
+            
         }
         return;
     }
