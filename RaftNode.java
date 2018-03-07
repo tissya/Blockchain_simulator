@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 class RaftNode{
     private int term = 0; //Raftの論理時間
     private int commit = 0;//コミットされたデータ数
