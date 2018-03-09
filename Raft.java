@@ -48,9 +48,24 @@ class Raft{
             }//if(!candidateSwitch && !leaderSwitch)
 
             //Candidateは存在するがLeaderがいない時(LeaderElection)
-            if(candidateSwitch && !leaderSwitch){
+            else if(candidateSwitch && !leaderSwitch){
+                int leader = 0; //どのノード番号がリーダになるかの変数
+                for(leader = 0; leader < nodes; leader++){
+                    if(node[leader].getRole() == "Candidate") break; //Candidateのノードが見つかったらbreak;する
+                }
+                node[leader].setRole("Leader");//breakしたときのノード番号のノードがLeaderになる
 
-            }
+                //それ以外が全員Followerになる
+                for(int i = 0; i < nodes; i++){
+                    if(i != leader)node[i].setRole("Follower");
+                }
+            }//else if(candidateSwitch && !leaderSwitch)(LeaderElection)
+
+            else{
+                //ここからリクエスト〜コミットの処理を記述する
+            }//else
+            
+            turn++;//1ターンカウント
         }
         return;
     }
