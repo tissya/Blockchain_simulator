@@ -32,8 +32,17 @@ class RaftNode{
     //candidateTimeを1減らすメソッド
     public String countdown(){
         this.candidateTime = this.candidateTime - 1;
-        if(this.candidateTime == 0) this.role = "Candidate"; //candidateTimeから1減らした後0になった時、Candidateに
+        //candidateTimeから1減らした後0になった時、Candidateに
+        if(this.candidateTime == 0){
+            this.role = "Candidate";
+            this.term = this.term + 1;//candidateになった時自身のtermを+1する
+        } 
         return this.role; //このノードの役割を返す
+    }
+
+    //Termを1増やすメソッド
+    public void countTerm(){
+        term = term + 1;
     }
 
 

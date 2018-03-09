@@ -36,6 +36,7 @@ class Raft{
         RaftNode[] node = new RaftNode[nodes]; 
         for(int i = 0; i < nodes; i++){
             node[i] = new RaftNode(i + 1);//candidateになるまでの時間を設定する
+            node[i].countTerm();//各ノードのtermを1にしておく
         }
 
         while(commit < norma){
@@ -57,7 +58,10 @@ class Raft{
 
                 //それ以外が全員Followerになる
                 for(int i = 0; i < nodes; i++){
-                    if(i != leader)node[i].setRole("Follower");
+                    if(i != leader){
+                        node[i].setRole("Follower");
+                        node[i].countTerm();//termを1増やす
+                    }
                 }
                 candidateSwitch = false;//candidateがいなくなるのでfalseに
                 leaderSwitch = true;//リーダが選出されたのでtrueに
