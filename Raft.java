@@ -59,12 +59,14 @@ class Raft{
                 for(int i = 0; i < nodes; i++){
                     if(i != leader)node[i].setRole("Follower");
                 }
+                candidateSwitch = false;//candidateがいなくなるのでfalseに
+                leaderSwitch = true;//リーダが選出されたのでtrueに
             }//else if(candidateSwitch && !leaderSwitch)(LeaderElection)
 
             else{
                 //ここからリクエスト〜コミットの処理を記述する
             }//else
-            
+
             turn++;//1ターンカウント
         }
         return;
