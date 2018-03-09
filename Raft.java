@@ -12,7 +12,7 @@ class Raft{
     private int turn = 0;//経過ターン数
     private int messageNum = 0;//メッセージ数
     private boolean candidateSwitch = false; //ノード群の中にCandidateがいるかどうか(LeaderElection)
-    private boolean leaderSwitch = false;//ノード群の中にLeaderがいるかどうか(LeaderElection)
+    private boolean leaderSwitch = false;//ノード群の中にLeaderがいるかどうか
 
     //コンストラクタ
     Raft(int norma,int node){
