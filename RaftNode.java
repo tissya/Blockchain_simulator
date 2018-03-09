@@ -1,7 +1,17 @@
 class RaftNode{
     private int term = 0; //Raftの論理時間
-    private int commit = 0;//コミットされたデータ数
-    private String role = "Candidate"; //このノードの役割(Follower, Candidate, Leaderのいずれかになる)
+    private int commit = 0; //コミットされたデータ数
+    private String role = "Follower"; //このノードの役割(Follower, Candidate, Leaderのいずれかになる)
+    private int candidateTime = 0; //Candidateになるまでの論理時間。0になるとCandidateに。
+
+    //コンストラクタ:何もなし
+    RaftNode(){
+    }
+
+    //コンストラクタ:candidateになるまでの時間を指定する
+    RaftNode(int time){
+        this.candidateTime = time;
+    }
 
     //コミットされたデータ数を返す
     public int getCommit(){
@@ -18,6 +28,14 @@ class RaftNode{
         role = choice;
         return;
     }
+
+    //candidateTimeを1減らすメソッド
+    public String countdown(){
+        this.candidateTime = this.candidateTime - 1;
+        if(this.candidateTime == 0) this.role = "Candidate"; //candidateTimeから1減らした後0になった時、Candidateに
+        return this.role; //このノードの役割を返す
+    }
+
 
     //データがコミットされた時用のメソッド
     public void commitData(){
