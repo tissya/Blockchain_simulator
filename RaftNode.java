@@ -3,6 +3,7 @@ class RaftNode{
     private int commit = 0; //コミットされたデータ数
     private String role = "Follower"; //このノードの役割(Follower, Candidate, Leaderのいずれかになる)
     private int candidateTime = 0; //Candidateになるまでの論理時間。0になるとCandidateに。
+    private boolean requestSwitch = false; //リクエストを受け取ったかどうか判定(Leaderの場合は自発した時にtrueに)
 
     //コンストラクタ:何もなし
     RaftNode(){
@@ -21,6 +22,11 @@ class RaftNode{
     //役割を返す
     public String getRole(){
         return role;
+    }
+
+    //requestSwitchの状態を返す
+    public boolean getRequest(){
+        return requestSwitch;
     }
 
     //役割を設定するメソッド
@@ -43,12 +49,20 @@ class RaftNode{
     //Termを1増やすメソッド
     public void countTerm(){
         term = term + 1;
+        return;
+    }
+
+    //リクエストを受け取ったor自発した時にrequestスイッチをONにする
+    public void requestStart(){
+        requestSwitch = true;
+        return;
     }
 
 
     //データがコミットされた時用のメソッド
     public void commitData(){
-        commit++;//コミットされたデータ数を+1する
+        commit++; //コミットされたデータ数を+1する
+        requestSwitch = false; //リクエストスイッチをfalseにする
         return;
     }
 }

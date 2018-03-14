@@ -5,6 +5,8 @@ Raftのプログラム
 2,最初は各ノードは役割を持っていないものとする(リーダー選出から始まる)
 */
 
+import java.lang.Math;
+
 class Raft{
     private int commit = 0; //どれだけコミットされたかカウントする
     private int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
@@ -13,6 +15,7 @@ class Raft{
     private int messageNum = 0;//メッセージ数
     private boolean candidateSwitch = false; //ノード群の中にCandidateがいるかどうか(LeaderElection)
     private boolean leaderSwitch = false;//ノード群の中にLeaderがいるかどうか
+    private int leader = 0; //どのノード番号がリーダになるかの変数
 
     //コンストラクタ
     Raft(int norma,int node){
@@ -50,7 +53,6 @@ class Raft{
 
             //Candidateは存在するがLeaderがいない時(LeaderElection)
             else if(candidateSwitch && !leaderSwitch){
-                int leader = 0; //どのノード番号がリーダになるかの変数
                 for(leader = 0; leader < nodes; leader++){
                     if(node[leader].getRole() == "Candidate") break; //Candidateのノードが見つかったらbreak;する
                 }
@@ -67,11 +69,44 @@ class Raft{
                 leaderSwitch = true;//リーダが選出されたのでtrueに
             }//else if(candidateSwitch && !leaderSwitch)(LeaderElection)
 
+            //ここからリクエスト〜コミットの処理
             else{
-                //ここからリクエスト〜コミットの処理を記述する
+                //リーダがリクエストを自発していない場合
+                if(!node[leader].getRequest() && !node[leader+1].getRequest()){
+                    node[leader].requestStart(); //リーダのリクエストを生成する
+                }
+
+                //リーダがリクエストを生成済み&Followerがリクエストを受け取っていない場合
+                else if(node[leader].getRequest() && !node[leader+1].getRequest()){
+                    for(int i = 0; i < nodes; i++){
+                        if(i != leader){
+                            node[i].requestStart();//Leader以外のノード全てがリクエストを受け取る
+                        }
+                    }
+                }
+
+                //リーダがリクエストを生成済み&Followerがリクエストを受け取っている場合
+                else if(node[leader].getRequest() && node[leader+1].getRequest()){
+                    node[leader].commitData();//最初にLeader側でコミットする
+                }
+
+                //リーダがコミット済み&Followerがまだコミットしていない場合
+                else{
+                    for(int i = 0; i < nodes; i++){
+                        if(i != leader){
+                            node[i].commitData();;//Leader以外のノード全てがリクエストを受け取る
+                        }
+                    }
+                }
+
             }//else
 
             turn++;//1ターンカウント
+            commit = node[0].getCommit();
+            for(int i = 1; i < node.length;i++){
+                int length = node[i].getCommit();
+                commit = Math.min(commit, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
+            }
         }
         return;
     }
