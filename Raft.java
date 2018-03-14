@@ -94,7 +94,7 @@ class Raft{
                 else{
                     for(int i = 0; i < nodes; i++){
                         if(i != leader){
-                            node[i].commitData();;//Leader以外のノード全てがリクエストを受け取る
+                            node[i].commitData();//Leader以外のノード全てがリクエストを受け取る
                         }
                     }
                 }
