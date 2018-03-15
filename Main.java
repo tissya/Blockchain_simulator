@@ -14,8 +14,11 @@ class Main{
 
         int bcMessage = bc.getMessageNum();
         int bcTurn = bc.getTurn();
+        int raftMessage = raft.getMessageNum();
+        int raftTurn = raft.getTurn();
 
         //Blockchainシミュレート結果を出力する
         System.out.println("Blockchain : Message = " + bcMessage + " Turn = " + bcTurn);
+        System.out.println("Raft : Message = " + raftMessage + " Turn = " + raftTurn);
     }
 }
