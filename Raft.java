@@ -114,7 +114,9 @@ class Raft{
                 int length = node[i].getCommit();
                 commit = Math.min(commit, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
-        }
+            System.out.println(messageNum);
+            System.out.println(turn);
+        }//while
         return;
     }
 }
