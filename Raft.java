@@ -3,6 +3,8 @@ Raftのプログラム
 ・前提
 1,各ノードは故障しない
 2,最初は各ノードは役割を持っていないものとする(リーダー選出から始まる)
+・問題点
+1,ハートビートをどうしよう??
 */
 
 import java.lang.Math;
@@ -57,12 +59,14 @@ class Raft{
                     if(node[leader].getRole() == "Candidate") break; //Candidateのノードが見つかったらbreak;する
                 }
                 node[leader].setRole("Leader");//breakしたときのノード番号のノードがLeaderになる
+                messageNum += (nodes - 1) * 2; //Candidate -> 全体ノード数 - 1 にメッセージを送信する
 
                 //それ以外が全員Followerになる
                 for(int i = 0; i < nodes; i++){
                     if(i != leader){
                         node[i].setRole("Follower");
                         node[i].countTerm();//termを1増やす
+                        messageNum++;//Leaderに返信する
                     }
                 }
                 candidateSwitch = false;//candidateがいなくなるのでfalseに
@@ -81,6 +85,7 @@ class Raft{
                     for(int i = 0; i < nodes; i++){
                         if(i != leader){
                             node[i].requestStart();//Leader以外のノード全てがリクエストを受け取る
+                            messageNum++; //Followerがリクエストメッセージを受信する(Leaderがリクエストメッセージを送信する)
                         }
                     }
                 }
@@ -88,6 +93,7 @@ class Raft{
                 //リーダがリクエストを生成済み&Followerがリクエストを受け取っている場合
                 else if(node[leader].getRequest() && node[leader+1].getRequest()){
                     node[leader].commitData();//最初にLeader側でコミットする
+                    messageNum += nodes - 1;//Followerのリクエストメッセージに対する返答の受信
                 }
 
                 //リーダがコミット済み&Followerがまだコミットしていない場合
@@ -95,6 +101,7 @@ class Raft{
                     for(int i = 0; i < nodes; i++){
                         if(i != leader){
                             node[i].commitData();//Leader以外のノード全てがリクエストを受け取る
+                            messageNum++;//実際はここでハートビート(リクエスト内容のコミット確定)を送信する必要がある
                         }
                     }
                 }
