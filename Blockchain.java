@@ -49,9 +49,9 @@ class Blockchain{
 
     public void run(){
         //指定分のノードを作成
-        Node[] node = new Node[nodes]; 
+        BcNode[] node = new BcNode[nodes]; 
         for(int i = 0; i < nodes; i++){
-            node[i] = new Node();
+            node[i] = new BcNode();
         }
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける

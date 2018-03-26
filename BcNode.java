@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Node{
+class BcNode{
     public ArrayList<Block> chain = new ArrayList<>(); //ブロックのチェーン
     private Block inspectBlock = null; //検査されるブロックを保持する
     private int numberCount = 1;//BlockのData内容(ブロックのIDカウントみたいなの)
