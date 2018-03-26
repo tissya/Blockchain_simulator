@@ -10,7 +10,7 @@ class Main{
 
         bc.run();//Blockchainのシミュレーション開始
         //gdg.run();//BlockDAGのシミュレーション開始
-        //raft.run();//Raftのシミュレーション開始
+        raft.run();//Raftのシミュレーション開始
 
         int bcMessage = bc.getMessageNum();
         int bcTurn = bc.getTurn();
