@@ -44,7 +44,9 @@ class Raft{
             node[i].countTerm();//各ノードのtermを1にしておく
         }
 
+        //以下Raftの仕様
         while(commit < norma){
+            System.out.println("にゃーん");
             //全員がFollowerの場合(初期値)
             if(!candidateSwitch && !leaderSwitch){
                 for(int i = 0; i < nodes; i++){
