@@ -1,5 +1,5 @@
 //ブロックの中身かぶってないかの検査をどうすっかなー
-
+//検査はどのタイミングで行われるか調べる:(
 import java.lang.Math;
 
 class BlockDAG{
@@ -49,6 +49,24 @@ class BlockDAG{
                     sendingMessage();//自身以外にメッセージを送信する
                     sendMessage = true;//発見したブロックを自身以外の全てのノードに通知する
                     node[0].inspect(block);//実際はすでにinspect済みである(マイニングした時点で)
+                }
+
+                //ノードNo.0がブロック検査をしていて、かつ他のノードがブロック検査していない時
+                else if(node[0].getInspectRun() && !node[1].getInspectRun()){
+                    node[0].addBlock();//No.0がブロックを追加
+                    Block block = new Block();
+                    //No.0以外の全てのノードがブロック検査をする
+                    for(int i = 1; i < node.length;i++){
+                        node[i].inspect(block);
+                    }
+                }
+
+                //最後にNo.0以外のノード全てがブロックを追加する
+                else{
+                    for(int i = 1; i < node.length;i++){
+                        node[i].addBlock();
+                    }
+                    mining = false;//全てのノードがブロックを追加した時、次のマイニングを開始する
                 }
             }//if(mining)
             else{
