@@ -4,16 +4,17 @@ import java.lang.Math;
 
 class BlockDAG{
     private int norma; ////全てのノードにブロックが"norma"回追加するまでシミュレートする
-    private int node; //ノード数
+    private int nodes; //ノード数
     private int consensus = 0;//合意されたブロック数
     private int messageNum = 0;//送信されたメッセージ数
     private int turn = 0;//経過ターン数
     private boolean mining = false;
+    private boolean sendMessage = false;
 
     //コンストラクタ
-    BlockDAG(int norma,int node){
+    BlockDAG(int norma,int nodes){
         this.norma = norma;
-        this.node = node;
+        this.nodes = nodes;
     }
 
     BlockDAG(){
