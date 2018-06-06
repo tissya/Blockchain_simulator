@@ -29,7 +29,7 @@ class Blockchain{
     boolean anotherInspect = false;//配信者以外のノードがブロックを検査したどうかのフラグ
 
     //コンストラクタ
-    Blockchain(int norma,int node){
+    Blockchain(int node,int norma){
         this.norma = norma;
         this.nodes = node;
     }
@@ -92,7 +92,7 @@ class Blockchain{
                     }
             }//if(mining)
 
-            else{//マイニングされていない時全てのノードはマイニングをする
+            else{//マイニングされていない時、全てのノードはマイニングをする
                 //配信者ノードをランダムで決定する
                 if(sendCounter >= nodes){
                     sendCounter = 0;
@@ -100,6 +100,7 @@ class Blockchain{
                 }
                 distributor = distributorList.get(sendCounter);
                 sendCounter++;
+                System.out.println("配信者番号 : " + distributor); //テスト用
 
                 mining = true;
             }
