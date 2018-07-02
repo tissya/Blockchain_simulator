@@ -54,15 +54,18 @@ class Blockchain{
         //指定分のノードを作成
         BcNode[] node = new BcNode[nodes]; 
         //配信ノードを決定するためのパラメータ
-        ArrayList<Integer> distributorList = new ArrayList<Integer>();
+        //ArrayList<Integer> distributorList = new ArrayList<Integer>();
         int distributor = 0;//配信者のノード番号
-        int sendCounter = 0;
+        //int sendCounter = 0;
+        PoW = new PoW(nodes);
 
+        /*
         for(int i = 0; i < nodes; i++){
             node[i] = new BcNode();
             distributorList.add(i);
         }
         Collections.shuffle(distributorList);//Listの中身をシャッフルする
+        */
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
@@ -94,6 +97,9 @@ class Blockchain{
 
             else{//マイニングされていない時、全てのノードはマイニングをする
                 //配信者ノードをランダムで決定する
+                 distributor = PoW();
+
+                /*
                 if(sendCounter >= nodes){
                     sendCounter = 0;
                     Collections.shuffle(distributorList);
@@ -101,6 +107,7 @@ class Blockchain{
                 distributor = distributorList.get(sendCounter);
                 sendCounter++;
                 System.out.println("配信者番号 : " + distributor); //テスト用
+                */
 
                 mining = true;
             }
