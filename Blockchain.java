@@ -16,8 +16,6 @@ Blockchainのプログラム
 */
 
 import java.lang.Math;
-import java.util.ArrayList;
-import java.util.Collections;
 
 class Blockchain{
     int consensus = 0; //全てのノードにブロックが追加された数
@@ -54,18 +52,14 @@ class Blockchain{
         //指定分のノードを作成
         BcNode[] node = new BcNode[nodes]; 
         //配信ノードを決定するためのパラメータ
-        //ArrayList<Integer> distributorList = new ArrayList<Integer>();
         int distributor = 0;//配信者のノード番号
-        //int sendCounter = 0;
-        PoW p = new PoW(nodes);
+        PoW p = new PoW(nodes); //PoWを行うためのインスタンスを作成する
 
         
         for(int i = 0; i < nodes; i++){
             node[i] = new BcNode();
         }
-        //Collections.shuffle(distributorList);//Listの中身をシャッフルする
         
-
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
@@ -97,16 +91,6 @@ class Blockchain{
             else{//マイニングされていない時、全てのノードはマイニングをする
                 //配信者ノードをランダムで決定する
                  distributor = p.pow();
-
-                /*
-                if(sendCounter >= nodes){
-                    sendCounter = 0;
-                    Collections.shuffle(distributorList);
-                }
-                distributor = distributorList.get(sendCounter);
-                sendCounter++;
-                System.out.println("配信者番号 : " + distributor); //テスト用
-                */
 
                 mining = true;
             }
