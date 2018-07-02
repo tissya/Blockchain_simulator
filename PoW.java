@@ -7,9 +7,8 @@ import java.util.Collections;
 
 class PoW{
     private int nodes = 0; //ノード数
-    private int distributer = 0; //配信者番号
     private int sendCounter = 0; //どれだけPoWを行ったかをカウント
-    ArrayList<Integer> distributorList = new ArrayList<Integer>(); //配信者リスト
+    private ArrayList<Integer> distributorList = new ArrayList<Integer>(); //配信者リスト
 
     //コンストラクタ
     PoW(int nodes){
@@ -22,13 +21,16 @@ class PoW{
 
     //PoWを行って配信者を決定するメソッド
     protected int pow(){
+        int distributer = 0; //配信者番号
+        
+
         if(sendCounter >= nodes){
             sendCounter = 0;
             Collections.shuffle(distributorList);
         }
-        distributor = distributorList.get(sendCounter);
+        distributer = distributorList.get(sendCounter);
         sendCounter++;
-        System.out.println("配信者番号 : " + distributor); //テスト用
+        System.out.println("配信者番号 : " + distributer); //テスト用
 
         return distributer;
     }

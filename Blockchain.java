@@ -57,15 +57,14 @@ class Blockchain{
         //ArrayList<Integer> distributorList = new ArrayList<Integer>();
         int distributor = 0;//配信者のノード番号
         //int sendCounter = 0;
-        PoW = new PoW(nodes);
+        PoW p = new PoW(nodes);
 
-        /*
+        
         for(int i = 0; i < nodes; i++){
             node[i] = new BcNode();
-            distributorList.add(i);
         }
-        Collections.shuffle(distributorList);//Listの中身をシャッフルする
-        */
+        //Collections.shuffle(distributorList);//Listの中身をシャッフルする
+        
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
@@ -97,7 +96,7 @@ class Blockchain{
 
             else{//マイニングされていない時、全てのノードはマイニングをする
                 //配信者ノードをランダムで決定する
-                 distributor = PoW();
+                 distributor = p.pow();
 
                 /*
                 if(sendCounter >= nodes){
