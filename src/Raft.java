@@ -49,23 +49,23 @@ class Raft{
             //全員がFollowerの場合(初期値)
             if(!candidateSwitch && !leaderSwitch){
                 for(int i = 0; i < nodes; i++){
-                    String role = node[i].countdown();//各ノードのcandidateTimeを1減らす
-                    if(role == "Candidate") candidateSwitch = true;//ノードの中にCandidateがいたらcandidateSwitchをTrueに
+                    NodeRole role = node[i].countDown();//各ノードのcandidateTimeを1減らす
+                    if(role == NodeRole.Candidate) candidateSwitch = true;//ノードの中にCandidateがいたらcandidateSwitchをTrueに
                 }
             }//if(!candidateSwitch && !leaderSwitch)
 
             //Candidateは存在するがLeaderがいない時(LeaderElection)
             else if(candidateSwitch && !leaderSwitch){
                 for(leader = 0; leader < nodes; leader++){
-                    if(node[leader].getRole() == "Candidate") break; //Candidateのノードが見つかったらbreak;する
+                    if(node[leader].getRole() == NodeRole.Candidate) break; //Candidateのノードが見つかったらbreak;する
                 }
-                node[leader].setRole("Leader");//breakしたときのノード番号のノードがLeaderになる
+                node[leader].setRole(NodeRole.Leader);//breakしたときのノード番号のノードがLeaderになる
                 messageNum += (nodes - 1) * 2; //Candidate -> 全体ノード数 - 1 にメッセージを送信する
 
                 //それ以外が全員Followerになる
                 for(int i = 0; i < nodes; i++){
                     if(i != leader){
-                        node[i].setRole("Follower");
+                        node[i].setRole(NodeRole.Follower);
                         node[i].countTerm();//termを1増やす
                         messageNum++;//Leaderに返信する
                     }
@@ -77,22 +77,22 @@ class Raft{
             //ここからリクエスト〜コミットの処理
             else{
                 //リーダがリクエストを自発していない場合
-                if(!node[leader].getRequest() && !node[leader+1].getRequest()){
-                    node[leader].requestStart(); //リーダのリクエストを生成する
+                if(!node[leader].isRequested() && !node[leader+1].isRequested()){
+                    node[leader].setRequested(true); //リーダのリクエストを生成する
                 }
 
                 //リーダがリクエストを生成済み&Followerがリクエストを受け取っていない場合
-                else if(node[leader].getRequest() && !node[leader+1].getRequest()){
+                else if(node[leader].isRequested() && !node[leader+1].isRequested()){
                     for(int i = 0; i < nodes; i++){
                         if(i != leader){
-                            node[i].requestStart();//Leader以外のノード全てがリクエストを受け取る
+                            node[i].setRequested(true);//Leader以外のノード全てがリクエストを受け取る
                             messageNum++; //Followerがリクエストメッセージを受信する(Leaderがリクエストメッセージを送信する)
                         }
                     }
                 }
 
                 //リーダがリクエストを生成済み&Followerがリクエストを受け取っている場合
-                else if(node[leader].getRequest() && node[leader+1].getRequest()){
+                else if(node[leader].isRequested() && node[leader+1].isRequested()){
                     node[leader].commitData();//最初にLeader側でコミットする
                     messageNum += nodes - 1;//Followerのリクエストメッセージに対する返答の受信
                 }
