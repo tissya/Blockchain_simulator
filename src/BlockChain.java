@@ -2,7 +2,7 @@
 Blockchainのプログラム
 前提として
 1,マイニングを成功させるのは必ずnode[0]である
-2,node[0]以外は承認した後に承認メッセージをメッセージを送信しない(承認要求メッセージに対して返信しない)
+2,nodes[0]以外は承認した後に承認メッセージをメッセージを送信しない(承認要求メッセージに対して返信しない)
 3,チェーンは分岐しない
 4,ノードは故障せずネットワークから離脱しない、また悪意のあるノードは存在しない
 5,承認要求されたブロックが拒否されることはない(必ずチェーンに追加される)
@@ -16,7 +16,7 @@ Blockchainのプログラム
 
 import java.lang.Math;
 
-class Blockchain{
+class BlockChain {
     int consensus = 0; //全てのノードにブロックが追加された数
     int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
     int nodes; //ノード数
@@ -26,12 +26,9 @@ class Blockchain{
     boolean sendMessage = false;//マイニングしたブロック通知の管理フラグ
 
     //コンストラクタ
-    Blockchain(int norma,int node){
+    BlockChain(int norma, int node){
         this.norma = norma;
         this.nodes = node;
-    }
-    Blockchain(){
-        //エラー
     }
 
     public int getMessageNum(){
@@ -49,22 +46,22 @@ class Blockchain{
 
     public void run(){
         //指定分のノードを作成
-        BcNode[] node = new BcNode[nodes]; 
+        BlockChainNode[] node = new BlockChainNode[nodes];
         for(int i = 0; i < nodes; i++){
-            node[i] = new BcNode();
+            node[i] = new BlockChainNode();
         }
 
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
             if(mining){//マイニングされた後の処理
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
-                    if(!node[0].getInspectRun() && !node[1].getInspectRun()){//ノードNo.0がブロック検査をしていない時
+                    if(!node[0].isRanInspect() && !node[1].isRanInspect()){//ノードNo.0がブロック検査をしていない時
                         Block block = new Block();
                         sendingMessage();//自身以外にメッセージを送信する
                         sendMessage = true;//発見したブロックを自身以外の全てのノードに通知する
                         node[0].inspect(block);//実際はすでにinspect済みである(マイニングした時点で)
                     }
 
-                    else if(node[0].getInspectRun() && !node[1].getInspectRun()){//ノードNo.0がブロック検査をしていて、かつ他のノードがブロック検査していない時
+                    else if(node[0].isRanInspect() && !node[1].isRanInspect()){//ノードNo.0がブロック検査をしていて、かつ他のノードがブロック検査していない時
                         node[0].addBlock();//No.0がブロックを追加
                         Block block = new Block();
                         //No.0以外の全てのノードがブロック検査をする
@@ -87,9 +84,9 @@ class Blockchain{
 
             turn++;//全てのノードが1回処理する毎にターンを1増やす
             //全てのノードのブロックチェーンに含まれるブロック数を比較してどれだけブロックが追加(コンセンサス)されているか求める
-            consensus = node[0].getChainlength();
+            consensus = node[0].getBlockChain().size();
             for(int i = 1; i < node.length;i++){
-                int length = node[i].getChainlength();
+                int length = node[i].getBlockChain().size();
                 consensus = Math.min(consensus, length);//追加されたブロック数を比較して最小の値をコンセンサスされた数として扱う
             }
         }//while
