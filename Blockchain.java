@@ -1,4 +1,4 @@
-/*
+/**
 Blockchainのプログラム
 前提として
 1,マイニングを成功させるのは必ずnode[0]である
@@ -18,21 +18,45 @@ Blockchainのプログラム
 import java.lang.Math;
 
 class Blockchain{
-    int consensus = 0; //全てのノードにブロックが追加された数
-    int norma; //全てのノードにブロックが"norma"回追加するまでシミュレートする
-    int nodes; //ノード数
-    int turn = 0;//経過ターン数
-    int messageNum = 0;//メッセージ数
-    boolean mining = false;//マイニングのフラグ
+    /**
+     * 全てのノードにブロックが追加された数
+     */
+    int consensus = 0;
+
+    /**
+     * 全てのノードにブロックが"norma"回追加するまでシミュレートする
+     */
+    int norma;
+
+    /**
+     * ノード数
+     */
+    int nodes;
+
+    /**
+     * 経過したターン数
+     */
+    int turn = 0;
+
+    /**
+     * メッセージ数
+     */
+    int messageNum = 0;
+
+    /**
+     * マイニングのフラグ
+     */
+    boolean isMining = false;
+
+    /**
+     * 配信者以外のノードがブロックを検査をしたかどうかを判定する
+     */
     boolean anotherInspect = false;//配信者以外のノードがブロックを検査したどうかのフラグ
 
-    //コンストラクタ
+    //コンストラクタ(エラー処理はsetterのExceptionを投げる)
     Blockchain(int node,int norma){
         this.norma = norma;
         this.nodes = node;
-    }
-    Blockchain(){
-        //エラー
     }
 
     public int getMessageNum(){
@@ -61,7 +85,7 @@ class Blockchain{
         }
         
         while(consensus < norma){//指定ブロック数のコンセンサスが取れるまでループし続ける
-            if(mining){//マイニングされた後の処理
+            if(isMining){//マイニングされた後の処理
                 //ノードNo.0が発掘したものを前提として、他のノードにブロックを検査させるようにする
                     if(!node[distributor].getInspectRun() && !anotherInspect){//ノードNo.0がブロック検査をしていない時
                         Block block = new Block();
@@ -83,16 +107,16 @@ class Blockchain{
                         for(int i = 0; i < nodes;i++){
                             if(i != distributor) node[i].addBlock();
                         }
-                        mining = false;//全てのノードがブロックを追加した時、次のマイニングを開始する
+                        isMining = false;//全てのノードがブロックを追加した時、次のマイニングを開始する
                         anotherInspect = false;
                     }
-            }//if(mining)
+            }//if(isMining)
 
             else{//マイニングされていない時、全てのノードはマイニングをする
                 //配信者ノードをランダムで決定する
                  distributor = p.pow();
 
-                mining = true;
+                isMining = true;
             }
 
             turn++;//全てのノードが1回処理する毎にターンを1増やす

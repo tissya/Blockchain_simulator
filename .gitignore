@@ -2,3 +2,7 @@
 *.class
 *.json
 .DS_Store
+*.jar
+*.txt
+assets
+META-INF
